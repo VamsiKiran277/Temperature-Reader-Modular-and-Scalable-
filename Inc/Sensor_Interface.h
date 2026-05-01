@@ -68,6 +68,15 @@ typedef struct {
 	volatile uint32_t TIMx_ARR;
 }TIM2_t;
 
+typedef struct {
+    uint8_t humidity_int;
+    uint8_t humidity_dec;
+    uint8_t temp_int;
+    uint8_t temp_dec;
+    uint8_t checksum;
+    uint8_t valid;       /* 1 = checksum passed, 0 = error */
+} DHT11_Data_t;
+
 //Function Definitons
 void BSP_init();
 void BSP_DTH11_start(void);
@@ -75,6 +84,10 @@ void BSP_Timer_init(void);
 void SysTick_Handler(void);
 uint32_t BSP_getTick(void);
 void BSP_Delay_ms(uint32_t delay);
-uint32_t BSP_TIM2ENABLE(void);
+void BSP_TIM2ENABLE(void);
+uint32_t BSP_getMicros(void);
+uint32_t BSP_DTH11_Response(void);
+uint8_t BSP_DTH11_ReadBit(void);
+DHT11_Data_t BSP_DTH11_ReadData(void);
 
 #endif /* SENSOR_INTERFACE_H_ */

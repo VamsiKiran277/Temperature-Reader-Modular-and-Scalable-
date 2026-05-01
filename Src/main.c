@@ -17,13 +17,33 @@
  */
 
 #include <stdint.h>
+#include "Sensor_Interface.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-int main(void)
-{
-    /* Loop forever */
-	for(;;);
+int main(void) {
+	//Hardware Initialization
+	BSP_init(); //Enable GPIO clocks
+	BSP_Timer_init(); //start systick for ms delays
+	BSP_TIM2ENABLE(); //start TIM2 for Microsecond Precision
+	DHT11_Data_t sensorData;
+	while(1) {
+		//Communication Process starts
+		BSP_DTH11_start(); //send 18ms wake up pulse
+		//check up for handshake response Low or High
+		if (BSP_DTH11_Response()) {
+			//Read all 40 bits of data and verify check sum
+			sensorData = BSP_DTH11_ReadData();
+			// Only update our main data if the checksum is correct
+			if (newData.valid) {
+				sensorData = newData;
+				first_read_done = 1;
+			} else {
+				// ERROR: Log checksum failure or blink an LED
+			}
+		}
+		BSP_Delay_ms(2000);
+	}
 }
