@@ -36,13 +36,8 @@ int main(void) {
 		if (BSP_DTH11_Response()) {
 			//Read all 40 bits of data and verify check sum
 			sensorData = BSP_DTH11_ReadData();
-			// Only update our main data if the checksum is correct
-			if (newData.valid) {
-				sensorData = newData;
-				first_read_done = 1;
-			} else {
-				// ERROR: Log checksum failure or blink an LED
-			}
+			//Handling data to Display module
+			Display_Update(sensorData);
 		}
 		BSP_Delay_ms(2000);
 	}

@@ -5,49 +5,49 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   00000188  08000000  08000000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00000118  08000188  08000188  00001188  2**2
+  1 .text         0000044c  08000188  08000188  00001188  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000000  080002a0  080002a8  000012a8  2**0
+  2 .rodata       00000000  080005d4  080005dc  000015dc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  3 .ARM.extab    00000000  080002a0  080002a0  000012a8  2**0
+  3 .ARM.extab    00000000  080005d4  080005d4  000015dc  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000000  080002a0  080002a0  000012a8  2**0
+  4 .ARM          00000000  080005d4  080005d4  000015dc  2**0
                   CONTENTS, READONLY
-  5 .preinit_array 00000000  080002a0  080002a8  000012a8  2**0
+  5 .preinit_array 00000000  080005d4  080005dc  000015dc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080002a0  080002a0  000012a0  2**2
+  6 .init_array   00000004  080005d4  080005d4  000015d4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  080002a4  080002a4  000012a4  2**2
+  7 .fini_array   00000004  080005d8  080005d8  000015d8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         00000000  20000000  20000000  000012a8  2**0
+  8 .data         00000000  20000000  20000000  000015dc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .ccmram       00000000  10000000  10000000  000012a8  2**0
+  9 .ccmram       00000000  10000000  10000000  000015dc  2**0
                   CONTENTS
  10 .bss          00000020  20000000  20000000  00002000  2**2
                   ALLOC
  11 ._user_heap_stack 00000600  20000020  20000020  00002000  2**0
                   ALLOC
- 12 .ARM.attributes 0000002a  00000000  00000000  000012a8  2**0
+ 12 .ARM.attributes 0000002a  00000000  00000000  000015dc  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00000338  00000000  00000000  000012d2  2**0
+ 13 .debug_info   00000686  00000000  00000000  00001606  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 0000019a  00000000  00000000  0000160a  2**0
+ 14 .debug_abbrev 00000292  00000000  00000000  00001c8c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000090  00000000  00000000  000017a8  2**3
+ 15 .debug_aranges 000000b8  00000000  00000000  00001f20  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 0000005d  00000000  00000000  00001838  2**0
+ 16 .debug_rnglists 0000007d  00000000  00000000  00001fd8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00001cce  00000000  00000000  00001895  2**0
+ 17 .debug_macro  00001cef  00000000  00000000  00002055  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00000ac4  00000000  00000000  00003563  2**0
+ 18 .debug_line   00000cf1  00000000  00000000  00003d44  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000078fd  00000000  00000000  00004027  2**0
+ 19 .debug_str    00007ae8  00000000  00000000  00004a35  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  0000b924  2**0
+ 20 .comment      00000043  00000000  00000000  0000c51d  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00000114  00000000  00000000  0000b968  2**2
+ 21 .debug_frame  000001c0  00000000  00000000  0000c560  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 00000056  00000000  00000000  0000ba7c  2**0
+ 22 .debug_line_str 00000056  00000000  00000000  0000c720  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -66,7 +66,7 @@ Disassembly of section .text:
  800019e:	bd10      	pop	{r4, pc}
  80001a0:	20000000 	.word	0x20000000
  80001a4:	00000000 	.word	0x00000000
- 80001a8:	08000288 	.word	0x08000288
+ 80001a8:	080005bc 	.word	0x080005bc
 
 080001ac <frame_dummy>:
  80001ac:	b508      	push	{r3, lr}
@@ -78,197 +78,708 @@ Disassembly of section .text:
  80001ba:	bd08      	pop	{r3, pc}
  80001bc:	00000000 	.word	0x00000000
  80001c0:	20000004 	.word	0x20000004
- 80001c4:	08000288 	.word	0x08000288
+ 80001c4:	080005bc 	.word	0x080005bc
 
-080001c8 <SysTick_Handler>:
+080001c8 <BSP_Timer_init>:
+#define TIM2_Timer_Start    (1<<0)
+//timer
+volatile uint32_t ms_ticks = 0; //hardware timer initialization for milli seconds
+
+
+void BSP_Timer_init(void) {
+ 80001c8:	b480      	push	{r7}
+ 80001ca:	af00      	add	r7, sp, #0
+	SYSTICK->LOAD = ((CLK_CYCLE)/1000) -1; //setting the reload value for 1ms interval
+ 80001cc:	4b08      	ldr	r3, [pc, #32]	@ (80001f0 <BSP_Timer_init+0x28>)
+ 80001ce:	f643 627f 	movw	r2, #15999	@ 0x3e7f
+ 80001d2:	605a      	str	r2, [r3, #4]
+	SYSTICK->VALUE = 0; //clearing the current value
+ 80001d4:	4b06      	ldr	r3, [pc, #24]	@ (80001f0 <BSP_Timer_init+0x28>)
+ 80001d6:	2200      	movs	r2, #0
+ 80001d8:	609a      	str	r2, [r3, #8]
+	//enable the counter - bit0
 	//enable the system exception -bit1
 	//use processor clock - bit2
 	SYSTICK->CONTROL |= CONTROL_ENABLE;
+ 80001da:	4b05      	ldr	r3, [pc, #20]	@ (80001f0 <BSP_Timer_init+0x28>)
+ 80001dc:	681b      	ldr	r3, [r3, #0]
+ 80001de:	4a04      	ldr	r2, [pc, #16]	@ (80001f0 <BSP_Timer_init+0x28>)
+ 80001e0:	f043 0307 	orr.w	r3, r3, #7
+ 80001e4:	6013      	str	r3, [r2, #0]
 }
+ 80001e6:	bf00      	nop
+ 80001e8:	46bd      	mov	sp, r7
+ 80001ea:	bc80      	pop	{r7}
+ 80001ec:	4770      	bx	lr
+ 80001ee:	bf00      	nop
+ 80001f0:	e000e010 	.word	0xe000e010
+
+080001f4 <SysTick_Handler>:
 
 void SysTick_Handler(void) {
- 80001c8:	b480      	push	{r7}
- 80001ca:	af00      	add	r7, sp, #0
+ 80001f4:	b480      	push	{r7}
+ 80001f6:	af00      	add	r7, sp, #0
 	ms_ticks++;
- 80001cc:	4b04      	ldr	r3, [pc, #16]	@ (80001e0 <SysTick_Handler+0x18>)
- 80001ce:	681b      	ldr	r3, [r3, #0]
- 80001d0:	3301      	adds	r3, #1
- 80001d2:	4a03      	ldr	r2, [pc, #12]	@ (80001e0 <SysTick_Handler+0x18>)
- 80001d4:	6013      	str	r3, [r2, #0]
+ 80001f8:	4b04      	ldr	r3, [pc, #16]	@ (800020c <SysTick_Handler+0x18>)
+ 80001fa:	681b      	ldr	r3, [r3, #0]
+ 80001fc:	3301      	adds	r3, #1
+ 80001fe:	4a03      	ldr	r2, [pc, #12]	@ (800020c <SysTick_Handler+0x18>)
+ 8000200:	6013      	str	r3, [r2, #0]
 }
- 80001d6:	bf00      	nop
- 80001d8:	46bd      	mov	sp, r7
- 80001da:	bc80      	pop	{r7}
- 80001dc:	4770      	bx	lr
- 80001de:	bf00      	nop
- 80001e0:	2000001c 	.word	0x2000001c
+ 8000202:	bf00      	nop
+ 8000204:	46bd      	mov	sp, r7
+ 8000206:	bc80      	pop	{r7}
+ 8000208:	4770      	bx	lr
+ 800020a:	bf00      	nop
+ 800020c:	2000001c 	.word	0x2000001c
 
-080001e4 <main>:
+08000210 <BSP_getTick>:
+uint32_t BSP_getTick(void) {
+ 8000210:	b480      	push	{r7}
+ 8000212:	af00      	add	r7, sp, #0
+	return ms_ticks;
+ 8000214:	4b02      	ldr	r3, [pc, #8]	@ (8000220 <BSP_getTick+0x10>)
+ 8000216:	681b      	ldr	r3, [r3, #0]
+}
+ 8000218:	4618      	mov	r0, r3
+ 800021a:	46bd      	mov	sp, r7
+ 800021c:	bc80      	pop	{r7}
+ 800021e:	4770      	bx	lr
+ 8000220:	2000001c 	.word	0x2000001c
+
+08000224 <BSP_Delay_ms>:
+
+void BSP_Delay_ms(uint32_t delay) {
+ 8000224:	b580      	push	{r7, lr}
+ 8000226:	b084      	sub	sp, #16
+ 8000228:	af00      	add	r7, sp, #0
+ 800022a:	6078      	str	r0, [r7, #4]
+	volatile uint32_t start = BSP_getTick();  //get current time
+ 800022c:	f7ff fff0 	bl	8000210 <BSP_getTick>
+ 8000230:	4603      	mov	r3, r0
+ 8000232:	60fb      	str	r3, [r7, #12]
+	while((BSP_getTick() - start) < delay);
+ 8000234:	bf00      	nop
+ 8000236:	f7ff ffeb 	bl	8000210 <BSP_getTick>
+ 800023a:	4602      	mov	r2, r0
+ 800023c:	68fb      	ldr	r3, [r7, #12]
+ 800023e:	1ad3      	subs	r3, r2, r3
+ 8000240:	687a      	ldr	r2, [r7, #4]
+ 8000242:	429a      	cmp	r2, r3
+ 8000244:	d8f7      	bhi.n	8000236 <BSP_Delay_ms+0x12>
+}
+ 8000246:	bf00      	nop
+ 8000248:	bf00      	nop
+ 800024a:	3710      	adds	r7, #16
+ 800024c:	46bd      	mov	sp, r7
+ 800024e:	bd80      	pop	{r7, pc}
+
+08000250 <BSP_init>:
+void BSP_init() {
+ 8000250:	b480      	push	{r7}
+ 8000252:	af00      	add	r7, sp, #0
+	RCC->RCC_AHB1ENR |=GPIOA_ENABLE; //enabled the clock for the GPIOA port
+ 8000254:	4b04      	ldr	r3, [pc, #16]	@ (8000268 <BSP_init+0x18>)
+ 8000256:	6a5b      	ldr	r3, [r3, #36]	@ 0x24
+ 8000258:	4a03      	ldr	r2, [pc, #12]	@ (8000268 <BSP_init+0x18>)
+ 800025a:	f043 0301 	orr.w	r3, r3, #1
+ 800025e:	6253      	str	r3, [r2, #36]	@ 0x24
+}
+ 8000260:	bf00      	nop
+ 8000262:	46bd      	mov	sp, r7
+ 8000264:	bc80      	pop	{r7}
+ 8000266:	4770      	bx	lr
+ 8000268:	40023800 	.word	0x40023800
+
+0800026c <BSP_DTH11_start>:
+
+void BSP_DTH11_start(void) {
+ 800026c:	b580      	push	{r7, lr}
+ 800026e:	af00      	add	r7, sp, #0
+	GPIOA->MODER &=~(PA0_CLEAR); //clear 0 and 1 bits
+ 8000270:	4b0e      	ldr	r3, [pc, #56]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 8000272:	681b      	ldr	r3, [r3, #0]
+ 8000274:	4a0d      	ldr	r2, [pc, #52]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 8000276:	f023 0303 	bic.w	r3, r3, #3
+ 800027a:	6013      	str	r3, [r2, #0]
+	GPIOA->MODER |=PA0_SET; //set bit 0 (01 output)
+ 800027c:	4b0b      	ldr	r3, [pc, #44]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 800027e:	681b      	ldr	r3, [r3, #0]
+ 8000280:	4a0a      	ldr	r2, [pc, #40]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 8000282:	f043 0301 	orr.w	r3, r3, #1
+ 8000286:	6013      	str	r3, [r2, #0]
+
+	GPIOA->ODR &=~(PA0_SET);
+ 8000288:	4b08      	ldr	r3, [pc, #32]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 800028a:	695b      	ldr	r3, [r3, #20]
+ 800028c:	4a07      	ldr	r2, [pc, #28]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 800028e:	f023 0301 	bic.w	r3, r3, #1
+ 8000292:	6153      	str	r3, [r2, #20]
+	BSP_Delay_ms(18);  //delay for 18ms
+ 8000294:	2012      	movs	r0, #18
+ 8000296:	f7ff ffc5 	bl	8000224 <BSP_Delay_ms>
+	//switch to input mode
+	GPIOA->MODER &=~(PA0_CLEAR);
+ 800029a:	4b04      	ldr	r3, [pc, #16]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 800029c:	681b      	ldr	r3, [r3, #0]
+ 800029e:	4a03      	ldr	r2, [pc, #12]	@ (80002ac <BSP_DTH11_start+0x40>)
+ 80002a0:	f023 0303 	bic.w	r3, r3, #3
+ 80002a4:	6013      	str	r3, [r2, #0]
+}
+ 80002a6:	bf00      	nop
+ 80002a8:	bd80      	pop	{r7, pc}
+ 80002aa:	bf00      	nop
+ 80002ac:	40020000 	.word	0x40020000
+
+080002b0 <BSP_TIM2ENABLE>:
+
+//to get microsecond timer
+void BSP_TIM2ENABLE(void) {
+ 80002b0:	b480      	push	{r7}
+ 80002b2:	af00      	add	r7, sp, #0
+	RCC->RCC_APB1ENR |=RCC_APB1_TIM2En; //enable the clock for the TIM2
+ 80002b4:	4b0d      	ldr	r3, [pc, #52]	@ (80002ec <BSP_TIM2ENABLE+0x3c>)
+ 80002b6:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 80002b8:	4a0c      	ldr	r2, [pc, #48]	@ (80002ec <BSP_TIM2ENABLE+0x3c>)
+ 80002ba:	f043 0301 	orr.w	r3, r3, #1
+ 80002be:	6313      	str	r3, [r2, #48]	@ 0x30
+	TIM2->TIMx_PSC = 15; //we are using 16MHZ
+ 80002c0:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
+ 80002c4:	220f      	movs	r2, #15
+ 80002c6:	629a      	str	r2, [r3, #40]	@ 0x28
+	TIM2->TIMx_ARR = 0xFFFF; //setting it to the longest time possible
+ 80002c8:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
+ 80002cc:	f64f 72ff 	movw	r2, #65535	@ 0xffff
+ 80002d0:	62da      	str	r2, [r3, #44]	@ 0x2c
+	TIM2->TIMx_CR1 |= TIM2_Timer_Start; //start the time
+ 80002d2:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
+ 80002d6:	681b      	ldr	r3, [r3, #0]
+ 80002d8:	f04f 4280 	mov.w	r2, #1073741824	@ 0x40000000
+ 80002dc:	f043 0301 	orr.w	r3, r3, #1
+ 80002e0:	6013      	str	r3, [r2, #0]
+}
+ 80002e2:	bf00      	nop
+ 80002e4:	46bd      	mov	sp, r7
+ 80002e6:	bc80      	pop	{r7}
+ 80002e8:	4770      	bx	lr
+ 80002ea:	bf00      	nop
+ 80002ec:	40023800 	.word	0x40023800
+
+080002f0 <BSP_getMicros>:
+
+uint32_t BSP_getMicros(void) {
+ 80002f0:	b480      	push	{r7}
+ 80002f2:	af00      	add	r7, sp, #0
+	return TIM2->TIMx_CNT;
+ 80002f4:	f04f 4380 	mov.w	r3, #1073741824	@ 0x40000000
+ 80002f8:	6a5b      	ldr	r3, [r3, #36]	@ 0x24
+}
+ 80002fa:	4618      	mov	r0, r3
+ 80002fc:	46bd      	mov	sp, r7
+ 80002fe:	bc80      	pop	{r7}
+ 8000300:	4770      	bx	lr
+	...
+
+08000304 <BSP_DTH11_Response>:
+
+uint32_t BSP_DTH11_Response(void) {
+ 8000304:	b580      	push	{r7, lr}
+ 8000306:	b082      	sub	sp, #8
+ 8000308:	af00      	add	r7, sp, #0
+	uint32_t timeout;
+	//wait for pin to go low
+	timeout = BSP_getMicros();
+ 800030a:	f7ff fff1 	bl	80002f0 <BSP_getMicros>
+ 800030e:	6078      	str	r0, [r7, #4]
+	while(GPIOA->IDR & (PA0_SET)) {
+ 8000310:	e008      	b.n	8000324 <BSP_DTH11_Response+0x20>
+		if((BSP_getMicros() - timeout) > 100) return 0; //Sensor Didn't pull low
+ 8000312:	f7ff ffed 	bl	80002f0 <BSP_getMicros>
+ 8000316:	4602      	mov	r2, r0
+ 8000318:	687b      	ldr	r3, [r7, #4]
+ 800031a:	1ad3      	subs	r3, r2, r3
+ 800031c:	2b64      	cmp	r3, #100	@ 0x64
+ 800031e:	d901      	bls.n	8000324 <BSP_DTH11_Response+0x20>
+ 8000320:	2300      	movs	r3, #0
+ 8000322:	e02c      	b.n	800037e <BSP_DTH11_Response+0x7a>
+	while(GPIOA->IDR & (PA0_SET)) {
+ 8000324:	4b18      	ldr	r3, [pc, #96]	@ (8000388 <BSP_DTH11_Response+0x84>)
+ 8000326:	691b      	ldr	r3, [r3, #16]
+ 8000328:	f003 0301 	and.w	r3, r3, #1
+ 800032c:	2b00      	cmp	r3, #0
+ 800032e:	d1f0      	bne.n	8000312 <BSP_DTH11_Response+0xe>
+	}
+	//wait for pin to go high, DHT11 releasing after 80us
+	timeout = BSP_getMicros();
+ 8000330:	f7ff ffde 	bl	80002f0 <BSP_getMicros>
+ 8000334:	6078      	str	r0, [r7, #4]
+	while (!(GPIOA->IDR & (PA0_SET))) { //While PA0 is still LOW
+ 8000336:	e008      	b.n	800034a <BSP_DTH11_Response+0x46>
+	        if ((BSP_getMicros() - timeout) > 100) return 0; //Stayed low too long
+ 8000338:	f7ff ffda 	bl	80002f0 <BSP_getMicros>
+ 800033c:	4602      	mov	r2, r0
+ 800033e:	687b      	ldr	r3, [r7, #4]
+ 8000340:	1ad3      	subs	r3, r2, r3
+ 8000342:	2b64      	cmp	r3, #100	@ 0x64
+ 8000344:	d901      	bls.n	800034a <BSP_DTH11_Response+0x46>
+ 8000346:	2300      	movs	r3, #0
+ 8000348:	e019      	b.n	800037e <BSP_DTH11_Response+0x7a>
+	while (!(GPIOA->IDR & (PA0_SET))) { //While PA0 is still LOW
+ 800034a:	4b0f      	ldr	r3, [pc, #60]	@ (8000388 <BSP_DTH11_Response+0x84>)
+ 800034c:	691b      	ldr	r3, [r3, #16]
+ 800034e:	f003 0301 	and.w	r3, r3, #1
+ 8000352:	2b00      	cmp	r3, #0
+ 8000354:	d0f0      	beq.n	8000338 <BSP_DTH11_Response+0x34>
+	}
+	//wait for pin to go low again
+	timeout = BSP_getMicros();
+ 8000356:	f7ff ffcb 	bl	80002f0 <BSP_getMicros>
+ 800035a:	6078      	str	r0, [r7, #4]
+	while (GPIOA->IDR & (PA0_SET)) { // While PA0 is still HIGH
+ 800035c:	e008      	b.n	8000370 <BSP_DTH11_Response+0x6c>
+	        if ((BSP_getMicros() - timeout) > 100) return 0; // Error: Stayed high too long
+ 800035e:	f7ff ffc7 	bl	80002f0 <BSP_getMicros>
+ 8000362:	4602      	mov	r2, r0
+ 8000364:	687b      	ldr	r3, [r7, #4]
+ 8000366:	1ad3      	subs	r3, r2, r3
+ 8000368:	2b64      	cmp	r3, #100	@ 0x64
+ 800036a:	d901      	bls.n	8000370 <BSP_DTH11_Response+0x6c>
+ 800036c:	2300      	movs	r3, #0
+ 800036e:	e006      	b.n	800037e <BSP_DTH11_Response+0x7a>
+	while (GPIOA->IDR & (PA0_SET)) { // While PA0 is still HIGH
+ 8000370:	4b05      	ldr	r3, [pc, #20]	@ (8000388 <BSP_DTH11_Response+0x84>)
+ 8000372:	691b      	ldr	r3, [r3, #16]
+ 8000374:	f003 0301 	and.w	r3, r3, #1
+ 8000378:	2b00      	cmp	r3, #0
+ 800037a:	d1f0      	bne.n	800035e <BSP_DTH11_Response+0x5a>
+	}
+	return 1; //handshake complete
+ 800037c:	2301      	movs	r3, #1
+}
+ 800037e:	4618      	mov	r0, r3
+ 8000380:	3708      	adds	r7, #8
+ 8000382:	46bd      	mov	sp, r7
+ 8000384:	bd80      	pop	{r7, pc}
+ 8000386:	bf00      	nop
+ 8000388:	40020000 	.word	0x40020000
+
+0800038c <BSP_DTH11_ReadBit>:
+
+//Read a single bit from DHT11
+
+uint8_t BSP_DTH11_ReadBit(void) {
+ 800038c:	b580      	push	{r7, lr}
+ 800038e:	b084      	sub	sp, #16
+ 8000390:	af00      	add	r7, sp, #0
+	uint32_t timeout;
+	uint32_t start;
+	uint32_t duration;
+
+	//wait for pin to go high
+	timeout = BSP_getMicros();
+ 8000392:	f7ff ffad 	bl	80002f0 <BSP_getMicros>
+ 8000396:	60f8      	str	r0, [r7, #12]
+	while (!(GPIOA->IDR & PA0_SET)) {
+ 8000398:	e008      	b.n	80003ac <BSP_DTH11_ReadBit+0x20>
+	        if ((BSP_getMicros() - timeout) > 80) return 0xFF; //still low
+ 800039a:	f7ff ffa9 	bl	80002f0 <BSP_getMicros>
+ 800039e:	4602      	mov	r2, r0
+ 80003a0:	68fb      	ldr	r3, [r7, #12]
+ 80003a2:	1ad3      	subs	r3, r2, r3
+ 80003a4:	2b50      	cmp	r3, #80	@ 0x50
+ 80003a6:	d901      	bls.n	80003ac <BSP_DTH11_ReadBit+0x20>
+ 80003a8:	23ff      	movs	r3, #255	@ 0xff
+ 80003aa:	e027      	b.n	80003fc <BSP_DTH11_ReadBit+0x70>
+	while (!(GPIOA->IDR & PA0_SET)) {
+ 80003ac:	4b15      	ldr	r3, [pc, #84]	@ (8000404 <BSP_DTH11_ReadBit+0x78>)
+ 80003ae:	691b      	ldr	r3, [r3, #16]
+ 80003b0:	f003 0301 	and.w	r3, r3, #1
+ 80003b4:	2b00      	cmp	r3, #0
+ 80003b6:	d0f0      	beq.n	800039a <BSP_DTH11_ReadBit+0xe>
+	}
+	//start the stopwatch the moment pin goes to high
+	start = BSP_getMicros();
+ 80003b8:	f7ff ff9a 	bl	80002f0 <BSP_getMicros>
+ 80003bc:	60b8      	str	r0, [r7, #8]
+	//wait for the pin to go low again
+	timeout = BSP_getMicros();
+ 80003be:	f7ff ff97 	bl	80002f0 <BSP_getMicros>
+ 80003c2:	60f8      	str	r0, [r7, #12]
+	while (GPIOA->IDR & PA0_SET) {
+ 80003c4:	e008      	b.n	80003d8 <BSP_DTH11_ReadBit+0x4c>
+	        if ((BSP_getMicros() - timeout) > 100) return 0xFF; //still high
+ 80003c6:	f7ff ff93 	bl	80002f0 <BSP_getMicros>
+ 80003ca:	4602      	mov	r2, r0
+ 80003cc:	68fb      	ldr	r3, [r7, #12]
+ 80003ce:	1ad3      	subs	r3, r2, r3
+ 80003d0:	2b64      	cmp	r3, #100	@ 0x64
+ 80003d2:	d901      	bls.n	80003d8 <BSP_DTH11_ReadBit+0x4c>
+ 80003d4:	23ff      	movs	r3, #255	@ 0xff
+ 80003d6:	e011      	b.n	80003fc <BSP_DTH11_ReadBit+0x70>
+	while (GPIOA->IDR & PA0_SET) {
+ 80003d8:	4b0a      	ldr	r3, [pc, #40]	@ (8000404 <BSP_DTH11_ReadBit+0x78>)
+ 80003da:	691b      	ldr	r3, [r3, #16]
+ 80003dc:	f003 0301 	and.w	r3, r3, #1
+ 80003e0:	2b00      	cmp	r3, #0
+ 80003e2:	d1f0      	bne.n	80003c6 <BSP_DTH11_ReadBit+0x3a>
+	}
+	//measure the high pulse duration
+	duration = BSP_getMicros()-start;
+ 80003e4:	f7ff ff84 	bl	80002f0 <BSP_getMicros>
+ 80003e8:	4602      	mov	r2, r0
+ 80003ea:	68bb      	ldr	r3, [r7, #8]
+ 80003ec:	1ad3      	subs	r3, r2, r3
+ 80003ee:	607b      	str	r3, [r7, #4]
+	return (duration > 40) ? 1 : 0; //if greater than 40 return 1 else 0
+ 80003f0:	687b      	ldr	r3, [r7, #4]
+ 80003f2:	2b28      	cmp	r3, #40	@ 0x28
+ 80003f4:	bf8c      	ite	hi
+ 80003f6:	2301      	movhi	r3, #1
+ 80003f8:	2300      	movls	r3, #0
+ 80003fa:	b2db      	uxtb	r3, r3
+}
+ 80003fc:	4618      	mov	r0, r3
+ 80003fe:	3710      	adds	r7, #16
+ 8000400:	46bd      	mov	sp, r7
+ 8000402:	bd80      	pop	{r7, pc}
+ 8000404:	40020000 	.word	0x40020000
+
+08000408 <BSP_DTH11_ReadData>:
+
+//Read all 40 bits from DHT11
+//Assume DHT11 returned 1 handshake complete
+DHT11_Data_t BSP_DTH11_ReadData(void)  {
+ 8000408:	b580      	push	{r7, lr}
+ 800040a:	b088      	sub	sp, #32
+ 800040c:	af00      	add	r7, sp, #0
+ 800040e:	6078      	str	r0, [r7, #4]
+	DHT11_Data_t result = {0};
+ 8000410:	f107 0314 	add.w	r3, r7, #20
+ 8000414:	2200      	movs	r2, #0
+ 8000416:	601a      	str	r2, [r3, #0]
+ 8000418:	809a      	strh	r2, [r3, #4]
+	uint8_t bytes[5]    = {0};
+ 800041a:	f107 030c 	add.w	r3, r7, #12
+ 800041e:	2200      	movs	r2, #0
+ 8000420:	601a      	str	r2, [r3, #0]
+ 8000422:	711a      	strb	r2, [r3, #4]
+	uint8_t bit;
+	for (uint8_t i = 0; i < 40; i++) {
+ 8000424:	2300      	movs	r3, #0
+ 8000426:	77fb      	strb	r3, [r7, #31]
+ 8000428:	e02e      	b.n	8000488 <BSP_DTH11_ReadData+0x80>
+	        bit = BSP_DTH11_ReadBit();
+ 800042a:	f7ff ffaf 	bl	800038c <BSP_DTH11_ReadBit>
+ 800042e:	4603      	mov	r3, r0
+ 8000430:	777b      	strb	r3, [r7, #29]
+	        if (bit == 0xFF) {
+ 8000432:	7f7b      	ldrb	r3, [r7, #29]
+ 8000434:	2bff      	cmp	r3, #255	@ 0xff
+ 8000436:	d108      	bne.n	800044a <BSP_DTH11_ReadData+0x42>
+	            //Timeout
+	            return result;
+ 8000438:	687b      	ldr	r3, [r7, #4]
+ 800043a:	461a      	mov	r2, r3
+ 800043c:	f107 0314 	add.w	r3, r7, #20
+ 8000440:	6818      	ldr	r0, [r3, #0]
+ 8000442:	6010      	str	r0, [r2, #0]
+ 8000444:	889b      	ldrh	r3, [r3, #4]
+ 8000446:	8093      	strh	r3, [r2, #4]
+ 8000448:	e045      	b.n	80004d6 <BSP_DTH11_ReadData+0xce>
+	        }
+	        if (bit) {
+ 800044a:	7f7b      	ldrb	r3, [r7, #29]
+ 800044c:	2b00      	cmp	r3, #0
+ 800044e:	d018      	beq.n	8000482 <BSP_DTH11_ReadData+0x7a>
+	            // Set the correct bit inside the correct byte (MSB first)
+	            bytes[i / 8] |= (1 << (7 - (i % 8)));
+ 8000450:	7ffb      	ldrb	r3, [r7, #31]
+ 8000452:	08db      	lsrs	r3, r3, #3
+ 8000454:	b2d8      	uxtb	r0, r3
+ 8000456:	4603      	mov	r3, r0
+ 8000458:	3320      	adds	r3, #32
+ 800045a:	443b      	add	r3, r7
+ 800045c:	f813 3c14 	ldrb.w	r3, [r3, #-20]
+ 8000460:	b25a      	sxtb	r2, r3
+ 8000462:	7ffb      	ldrb	r3, [r7, #31]
+ 8000464:	43db      	mvns	r3, r3
+ 8000466:	f003 0307 	and.w	r3, r3, #7
+ 800046a:	2101      	movs	r1, #1
+ 800046c:	fa01 f303 	lsl.w	r3, r1, r3
+ 8000470:	b25b      	sxtb	r3, r3
+ 8000472:	4313      	orrs	r3, r2
+ 8000474:	b25a      	sxtb	r2, r3
+ 8000476:	4603      	mov	r3, r0
+ 8000478:	b2d2      	uxtb	r2, r2
+ 800047a:	3320      	adds	r3, #32
+ 800047c:	443b      	add	r3, r7
+ 800047e:	f803 2c14 	strb.w	r2, [r3, #-20]
+	for (uint8_t i = 0; i < 40; i++) {
+ 8000482:	7ffb      	ldrb	r3, [r7, #31]
+ 8000484:	3301      	adds	r3, #1
+ 8000486:	77fb      	strb	r3, [r7, #31]
+ 8000488:	7ffb      	ldrb	r3, [r7, #31]
+ 800048a:	2b27      	cmp	r3, #39	@ 0x27
+ 800048c:	d9cd      	bls.n	800042a <BSP_DTH11_ReadData+0x22>
+	        }
+	        // bit == 0: nothing to do, byte was already zeroed
+	}
+	result.humidity_int = bytes[0];
+ 800048e:	7b3b      	ldrb	r3, [r7, #12]
+ 8000490:	753b      	strb	r3, [r7, #20]
+	result.humidity_dec = bytes[1];
+ 8000492:	7b7b      	ldrb	r3, [r7, #13]
+ 8000494:	757b      	strb	r3, [r7, #21]
+	result.temp_int     = bytes[2];
+ 8000496:	7bbb      	ldrb	r3, [r7, #14]
+ 8000498:	75bb      	strb	r3, [r7, #22]
+	result.temp_dec     = bytes[3];
+ 800049a:	7bfb      	ldrb	r3, [r7, #15]
+ 800049c:	75fb      	strb	r3, [r7, #23]
+	result.checksum     = bytes[4];
+ 800049e:	7c3b      	ldrb	r3, [r7, #16]
+ 80004a0:	763b      	strb	r3, [r7, #24]
+	uint8_t sum = bytes[0] + bytes[1] + bytes[2] + bytes[3];
+ 80004a2:	7b3a      	ldrb	r2, [r7, #12]
+ 80004a4:	7b7b      	ldrb	r3, [r7, #13]
+ 80004a6:	4413      	add	r3, r2
+ 80004a8:	b2da      	uxtb	r2, r3
+ 80004aa:	7bbb      	ldrb	r3, [r7, #14]
+ 80004ac:	4413      	add	r3, r2
+ 80004ae:	b2da      	uxtb	r2, r3
+ 80004b0:	7bfb      	ldrb	r3, [r7, #15]
+ 80004b2:	4413      	add	r3, r2
+ 80004b4:	77bb      	strb	r3, [r7, #30]
+	result.valid = (sum == bytes[4]) ? 1 : 0;
+ 80004b6:	7c3b      	ldrb	r3, [r7, #16]
+ 80004b8:	7fba      	ldrb	r2, [r7, #30]
+ 80004ba:	429a      	cmp	r2, r3
+ 80004bc:	bf0c      	ite	eq
+ 80004be:	2301      	moveq	r3, #1
+ 80004c0:	2300      	movne	r3, #0
+ 80004c2:	b2db      	uxtb	r3, r3
+ 80004c4:	767b      	strb	r3, [r7, #25]
+
+	return result;
+ 80004c6:	687b      	ldr	r3, [r7, #4]
+ 80004c8:	461a      	mov	r2, r3
+ 80004ca:	f107 0314 	add.w	r3, r7, #20
+ 80004ce:	6818      	ldr	r0, [r3, #0]
+ 80004d0:	6010      	str	r0, [r2, #0]
+ 80004d2:	889b      	ldrh	r3, [r3, #4]
+ 80004d4:	8093      	strh	r3, [r2, #4]
+}
+ 80004d6:	6878      	ldr	r0, [r7, #4]
+ 80004d8:	3720      	adds	r7, #32
+ 80004da:	46bd      	mov	sp, r7
+ 80004dc:	bd80      	pop	{r7, pc}
+
+080004de <main>:
+
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-int main(void)
-{
- 80001e4:	b480      	push	{r7}
- 80001e6:	af00      	add	r7, sp, #0
-    /* Loop forever */
-	for(;;);
- 80001e8:	bf00      	nop
- 80001ea:	e7fd      	b.n	80001e8 <main+0x4>
+int main(void) {
+ 80004de:	b580      	push	{r7, lr}
+ 80004e0:	b082      	sub	sp, #8
+ 80004e2:	af00      	add	r7, sp, #0
+	//Hardware Initialization
+	BSP_init(); //Enable GPIO clocks
+ 80004e4:	f7ff feb4 	bl	8000250 <BSP_init>
+	BSP_Timer_init(); //start systick for ms delays
+ 80004e8:	f7ff fe6e 	bl	80001c8 <BSP_Timer_init>
+	BSP_TIM2ENABLE(); //start TIM2 for Microsecond Precision
+ 80004ec:	f7ff fee0 	bl	80002b0 <BSP_TIM2ENABLE>
+	DHT11_Data_t sensorData;
+	while(1) {
+		//Communication Process starts
+		BSP_DTH11_start(); //send 18ms wake up pulse
+ 80004f0:	f7ff febc 	bl	800026c <BSP_DTH11_start>
+		//check up for handshake response Low or High
+		if (BSP_DTH11_Response()) {
+ 80004f4:	f7ff ff06 	bl	8000304 <BSP_DTH11_Response>
+ 80004f8:	4603      	mov	r3, r0
+ 80004fa:	2b00      	cmp	r3, #0
+ 80004fc:	d00b      	beq.n	8000516 <main+0x38>
+			//Read all 40 bits of data and verify check sum
+			sensorData = BSP_DTH11_ReadData();
+ 80004fe:	463b      	mov	r3, r7
+ 8000500:	4618      	mov	r0, r3
+ 8000502:	f7ff ff81 	bl	8000408 <BSP_DTH11_ReadData>
+			if (sensorData.valid) {
+ 8000506:	797b      	ldrb	r3, [r7, #5]
+ 8000508:	2b00      	cmp	r3, #0
+ 800050a:	d004      	beq.n	8000516 <main+0x38>
+			    if (sensorData.temp_int > 28) {
+ 800050c:	78bb      	ldrb	r3, [r7, #2]
+ 800050e:	2b1c      	cmp	r3, #28
+ 8000510:	d901      	bls.n	8000516 <main+0x38>
+			        // This 'uses' the variable so the compiler won't delete the code
+			        uint8_t alarm_triggered = 1;
+ 8000512:	2301      	movs	r3, #1
+ 8000514:	71fb      	strb	r3, [r7, #7]
+			    }
+			}
+		}
+		BSP_Delay_ms(2000);
+ 8000516:	f44f 60fa 	mov.w	r0, #2000	@ 0x7d0
+ 800051a:	f7ff fe83 	bl	8000224 <BSP_Delay_ms>
+		BSP_DTH11_start(); //send 18ms wake up pulse
+ 800051e:	e7e7      	b.n	80004f0 <main+0x12>
 
-080001ec <Reset_Handler>:
+08000520 <Reset_Handler>:
 
   .section .text.Reset_Handler
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
   ldr   r0, =_estack
- 80001ec:	480d      	ldr	r0, [pc, #52]	@ (8000224 <LoopForever+0x2>)
+ 8000520:	480d      	ldr	r0, [pc, #52]	@ (8000558 <LoopForever+0x2>)
   mov   sp, r0          /* set stack pointer */
- 80001ee:	4685      	mov	sp, r0
+ 8000522:	4685      	mov	sp, r0
 /* Call the clock system initialization function.*/
   bl  SystemInit
- 80001f0:	f3af 8000 	nop.w
+ 8000524:	f3af 8000 	nop.w
 
 /* Copy the data segment initializers from flash to SRAM */
   ldr r0, =_sdata
- 80001f4:	480c      	ldr	r0, [pc, #48]	@ (8000228 <LoopForever+0x6>)
+ 8000528:	480c      	ldr	r0, [pc, #48]	@ (800055c <LoopForever+0x6>)
   ldr r1, =_edata
- 80001f6:	490d      	ldr	r1, [pc, #52]	@ (800022c <LoopForever+0xa>)
+ 800052a:	490d      	ldr	r1, [pc, #52]	@ (8000560 <LoopForever+0xa>)
   ldr r2, =_sidata
- 80001f8:	4a0d      	ldr	r2, [pc, #52]	@ (8000230 <LoopForever+0xe>)
+ 800052c:	4a0d      	ldr	r2, [pc, #52]	@ (8000564 <LoopForever+0xe>)
   movs r3, #0
- 80001fa:	2300      	movs	r3, #0
+ 800052e:	2300      	movs	r3, #0
   b LoopCopyDataInit
- 80001fc:	e002      	b.n	8000204 <LoopCopyDataInit>
+ 8000530:	e002      	b.n	8000538 <LoopCopyDataInit>
 
-080001fe <CopyDataInit>:
+08000532 <CopyDataInit>:
 
 CopyDataInit:
   ldr r4, [r2, r3]
- 80001fe:	58d4      	ldr	r4, [r2, r3]
+ 8000532:	58d4      	ldr	r4, [r2, r3]
   str r4, [r0, r3]
- 8000200:	50c4      	str	r4, [r0, r3]
+ 8000534:	50c4      	str	r4, [r0, r3]
   adds r3, r3, #4
- 8000202:	3304      	adds	r3, #4
+ 8000536:	3304      	adds	r3, #4
 
-08000204 <LoopCopyDataInit>:
+08000538 <LoopCopyDataInit>:
 
 LoopCopyDataInit:
   adds r4, r0, r3
- 8000204:	18c4      	adds	r4, r0, r3
+ 8000538:	18c4      	adds	r4, r0, r3
   cmp r4, r1
- 8000206:	428c      	cmp	r4, r1
+ 800053a:	428c      	cmp	r4, r1
   bcc CopyDataInit
- 8000208:	d3f9      	bcc.n	80001fe <CopyDataInit>
+ 800053c:	d3f9      	bcc.n	8000532 <CopyDataInit>
 
 /* Zero fill the bss segment. */
   ldr r2, =_sbss
- 800020a:	4a0a      	ldr	r2, [pc, #40]	@ (8000234 <LoopForever+0x12>)
+ 800053e:	4a0a      	ldr	r2, [pc, #40]	@ (8000568 <LoopForever+0x12>)
   ldr r4, =_ebss
- 800020c:	4c0a      	ldr	r4, [pc, #40]	@ (8000238 <LoopForever+0x16>)
+ 8000540:	4c0a      	ldr	r4, [pc, #40]	@ (800056c <LoopForever+0x16>)
   movs r3, #0
- 800020e:	2300      	movs	r3, #0
+ 8000542:	2300      	movs	r3, #0
   b LoopFillZerobss
- 8000210:	e001      	b.n	8000216 <LoopFillZerobss>
+ 8000544:	e001      	b.n	800054a <LoopFillZerobss>
 
-08000212 <FillZerobss>:
+08000546 <FillZerobss>:
 
 FillZerobss:
   str  r3, [r2]
- 8000212:	6013      	str	r3, [r2, #0]
+ 8000546:	6013      	str	r3, [r2, #0]
   adds r2, r2, #4
- 8000214:	3204      	adds	r2, #4
+ 8000548:	3204      	adds	r2, #4
 
-08000216 <LoopFillZerobss>:
+0800054a <LoopFillZerobss>:
 
 LoopFillZerobss:
   cmp r2, r4
- 8000216:	42a2      	cmp	r2, r4
+ 800054a:	42a2      	cmp	r2, r4
   bcc FillZerobss
- 8000218:	d3fb      	bcc.n	8000212 <FillZerobss>
+ 800054c:	d3fb      	bcc.n	8000546 <FillZerobss>
 
 
 /* Call static constructors */
   bl __libc_init_array
- 800021a:	f000 f811 	bl	8000240 <__libc_init_array>
+ 800054e:	f000 f811 	bl	8000574 <__libc_init_array>
 /* Call the application's entry point.*/
 
   bl main
- 800021e:	f7ff ffe1 	bl	80001e4 <main>
+ 8000552:	f7ff ffc4 	bl	80004de <main>
 
-08000222 <LoopForever>:
+08000556 <LoopForever>:
 
 LoopForever:
   b LoopForever
- 8000222:	e7fe      	b.n	8000222 <LoopForever>
+ 8000556:	e7fe      	b.n	8000556 <LoopForever>
   ldr   r0, =_estack
- 8000224:	20020000 	.word	0x20020000
+ 8000558:	20020000 	.word	0x20020000
   ldr r0, =_sdata
- 8000228:	20000000 	.word	0x20000000
+ 800055c:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 800022c:	20000000 	.word	0x20000000
+ 8000560:	20000000 	.word	0x20000000
   ldr r2, =_sidata
- 8000230:	080002a8 	.word	0x080002a8
+ 8000564:	080005dc 	.word	0x080005dc
   ldr r2, =_sbss
- 8000234:	20000000 	.word	0x20000000
+ 8000568:	20000000 	.word	0x20000000
   ldr r4, =_ebss
- 8000238:	20000020 	.word	0x20000020
+ 800056c:	20000020 	.word	0x20000020
 
-0800023c <ADC_IRQHandler>:
+08000570 <ADC_IRQHandler>:
  * @retval : None
 */
   .section .text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
   b Infinite_Loop
- 800023c:	e7fe      	b.n	800023c <ADC_IRQHandler>
+ 8000570:	e7fe      	b.n	8000570 <ADC_IRQHandler>
 	...
 
-08000240 <__libc_init_array>:
- 8000240:	b570      	push	{r4, r5, r6, lr}
- 8000242:	4b0d      	ldr	r3, [pc, #52]	@ (8000278 <__libc_init_array+0x38>)
- 8000244:	4d0d      	ldr	r5, [pc, #52]	@ (800027c <__libc_init_array+0x3c>)
- 8000246:	1b5b      	subs	r3, r3, r5
- 8000248:	109c      	asrs	r4, r3, #2
- 800024a:	2600      	movs	r6, #0
- 800024c:	42a6      	cmp	r6, r4
- 800024e:	d109      	bne.n	8000264 <__libc_init_array+0x24>
- 8000250:	f000 f81a 	bl	8000288 <_init>
- 8000254:	4d0a      	ldr	r5, [pc, #40]	@ (8000280 <__libc_init_array+0x40>)
- 8000256:	4b0b      	ldr	r3, [pc, #44]	@ (8000284 <__libc_init_array+0x44>)
- 8000258:	1b5b      	subs	r3, r3, r5
- 800025a:	109c      	asrs	r4, r3, #2
- 800025c:	2600      	movs	r6, #0
- 800025e:	42a6      	cmp	r6, r4
- 8000260:	d105      	bne.n	800026e <__libc_init_array+0x2e>
- 8000262:	bd70      	pop	{r4, r5, r6, pc}
- 8000264:	f855 3b04 	ldr.w	r3, [r5], #4
- 8000268:	4798      	blx	r3
- 800026a:	3601      	adds	r6, #1
- 800026c:	e7ee      	b.n	800024c <__libc_init_array+0xc>
- 800026e:	f855 3b04 	ldr.w	r3, [r5], #4
- 8000272:	4798      	blx	r3
- 8000274:	3601      	adds	r6, #1
- 8000276:	e7f2      	b.n	800025e <__libc_init_array+0x1e>
- 8000278:	080002a0 	.word	0x080002a0
- 800027c:	080002a0 	.word	0x080002a0
- 8000280:	080002a0 	.word	0x080002a0
- 8000284:	080002a4 	.word	0x080002a4
+08000574 <__libc_init_array>:
+ 8000574:	b570      	push	{r4, r5, r6, lr}
+ 8000576:	4b0d      	ldr	r3, [pc, #52]	@ (80005ac <__libc_init_array+0x38>)
+ 8000578:	4d0d      	ldr	r5, [pc, #52]	@ (80005b0 <__libc_init_array+0x3c>)
+ 800057a:	1b5b      	subs	r3, r3, r5
+ 800057c:	109c      	asrs	r4, r3, #2
+ 800057e:	2600      	movs	r6, #0
+ 8000580:	42a6      	cmp	r6, r4
+ 8000582:	d109      	bne.n	8000598 <__libc_init_array+0x24>
+ 8000584:	f000 f81a 	bl	80005bc <_init>
+ 8000588:	4d0a      	ldr	r5, [pc, #40]	@ (80005b4 <__libc_init_array+0x40>)
+ 800058a:	4b0b      	ldr	r3, [pc, #44]	@ (80005b8 <__libc_init_array+0x44>)
+ 800058c:	1b5b      	subs	r3, r3, r5
+ 800058e:	109c      	asrs	r4, r3, #2
+ 8000590:	2600      	movs	r6, #0
+ 8000592:	42a6      	cmp	r6, r4
+ 8000594:	d105      	bne.n	80005a2 <__libc_init_array+0x2e>
+ 8000596:	bd70      	pop	{r4, r5, r6, pc}
+ 8000598:	f855 3b04 	ldr.w	r3, [r5], #4
+ 800059c:	4798      	blx	r3
+ 800059e:	3601      	adds	r6, #1
+ 80005a0:	e7ee      	b.n	8000580 <__libc_init_array+0xc>
+ 80005a2:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80005a6:	4798      	blx	r3
+ 80005a8:	3601      	adds	r6, #1
+ 80005aa:	e7f2      	b.n	8000592 <__libc_init_array+0x1e>
+ 80005ac:	080005d4 	.word	0x080005d4
+ 80005b0:	080005d4 	.word	0x080005d4
+ 80005b4:	080005d4 	.word	0x080005d4
+ 80005b8:	080005d8 	.word	0x080005d8
 
-08000288 <_init>:
- 8000288:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 800028a:	bf00      	nop
- 800028c:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 800028e:	bc08      	pop	{r3}
- 8000290:	469e      	mov	lr, r3
- 8000292:	4770      	bx	lr
+080005bc <_init>:
+ 80005bc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 80005be:	bf00      	nop
+ 80005c0:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80005c2:	bc08      	pop	{r3}
+ 80005c4:	469e      	mov	lr, r3
+ 80005c6:	4770      	bx	lr
 
-08000294 <_fini>:
- 8000294:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 8000296:	bf00      	nop
- 8000298:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 800029a:	bc08      	pop	{r3}
- 800029c:	469e      	mov	lr, r3
- 800029e:	4770      	bx	lr
+080005c8 <_fini>:
+ 80005c8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 80005ca:	bf00      	nop
+ 80005cc:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80005ce:	bc08      	pop	{r3}
+ 80005d0:	469e      	mov	lr, r3
+ 80005d2:	4770      	bx	lr

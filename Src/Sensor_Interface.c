@@ -104,14 +104,14 @@ uint8_t BSP_DTH11_ReadBit(void) {
 	        if ((BSP_getMicros() - timeout) > 80) return 0xFF; //still low
 	}
 	//start the stopwatch the moment pin goes to high
-	start = BSP_getMircros();
+	start = BSP_getMicros();
 	//wait for the pin to go low again
 	timeout = BSP_getMicros();
 	while (GPIOA->IDR & PA0_SET) {
 	        if ((BSP_getMicros() - timeout) > 100) return 0xFF; //still high
 	}
 	//measure the high pulse duration
-	duration = getMircros()-start;
+	duration = BSP_getMicros()-start;
 	return (duration > 40) ? 1 : 0; //if greater than 40 return 1 else 0
 }
 
