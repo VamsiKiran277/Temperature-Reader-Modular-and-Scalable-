@@ -27,7 +27,7 @@ This allows the main loop to execute continuous hardware abstraction logic while
 ### 2. Thermal Monitoring (DHT11 Bit-Banging)
 The code interacts with a DHT11 sensor using a strictly timed 1-wire sequence:
 * **Trigger:** The MCU pulls the GPIOA Pin 0 LOW for $>18\text{ ms}$, then releases it to HIGH.
-* **Handshake:** The MCU waits for the sensor to pull the line LOW for $80\text{ \mu s}$ and HIGH for $80\text{ \mu s}$.
+* **Handshake:** The MCU waits for the sensor to pull the line LOW for 80 µs and HIGH for 80 µs.
 * **Data Acquisition:** The MCU reads 40 discrete pulses to parse the 8-bit integral/decimal temperature and humidity values, verifying data integrity via a trailing checksum byte.
 * **Status Indication:** 
     * Valid Checksum: Activate GPIOD Pin 12 (Green LED).
