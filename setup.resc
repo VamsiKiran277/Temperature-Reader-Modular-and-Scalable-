@@ -1,0 +1,23 @@
+# setup.resc
+
+# 1. Clear any previous state
+Clear
+
+# 2. Create the machine
+mach create "stm32f407"
+using sysbus
+
+# 3. Load the base STM32F4 platform (No absolute path needed!)
+machine LoadPlatformDescription @platforms/boards/stm32f4_discovery.repl
+
+# 4. Load your custom DHT11 overlay (The Mock Button)
+machine LoadPlatformDescription @dht11_setup.repl
+
+# 5. Load your ELF (Works perfectly based on your images)
+sysbus LoadELF @Debug/Temperature_Reader.elf
+
+# 6. Start execution
+start
+
+# 7. Automatically write to Port D ODR (Offset 0x14) to turn on Pin 12 (Green LED)
+sysbus.gpioPortD WriteDoubleWord 0x14 0x00001000
