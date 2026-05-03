@@ -7,12 +7,15 @@
 
 #ifndef SENSOR_INTERFACE_H_
 #define SENSOR_INTERFACE_H_
+//#include "display_driver.h"
 
 #define GPIOA_BASE_ADDRESS  0x40020000
-#define GPIOD_BASE_ADDRESS    0x40020C00
 #define RCC_BASE_ADDRESS  0x40023800
 #define SYSTICK_BASE_ADDRESS  0xE000E010
 #define TIM2_BASE_ADDRESS  0x40000000
+
+#define GPIOA ((GPIO_t*)GPIOA_BASE_ADDRESS)
+#define RCC   ((RCC_t*)RCC_BASE_ADDRESS)
 
 typedef struct {
 	volatile uint32_t RCC_CR; //OFFSET AT 0x00

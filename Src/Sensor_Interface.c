@@ -9,13 +9,12 @@
 #include <stdint.h>
 #include "Sensor_Interface.h"
 //macros
-#define GPIOA ((GPIO_t*)GPIOA_BASE_ADDRESS)
-#define RCC   ((RCC_t*)RCC_BASE_ADDRESS)
 #define SYSTICK ((SYSTICK_t*)SYSTICK_BASE_ADDRESS)
 #define TIM2   ((TIM2_t*)TIM2_BASE_ADDRESS)
 #define CLK_CYCLE 16000000 // Set to 16MHz to match HSI startup for Renode
 //Bit - (set,clear,toggle)
 #define GPIOA_ENABLE (1<<0)
+#define GPIOD_ENABLE (1<<3)
 #define PA0_CLEAR  (3<<0)
 #define PA0_SET    (1<<0)
 #define CONTROL_ENABLE      (7 << 0)
@@ -47,6 +46,7 @@ void BSP_Delay_ms(uint32_t delay) {
 }
 void BSP_init() {
 	RCC->RCC_AHB1ENR |=GPIOA_ENABLE; //enabled the clock for the GPIOA port
+	RCC->RCC_AHB1ENR |=GPIOD_ENABLE; //enabled the clock for GPIOD port
 }
 
 void BSP_DTH11_start(void) {

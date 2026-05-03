@@ -1,8 +1,8 @@
-../Src/Sensor_Interface.c:28:6:BSP_Timer_init	1
-../Src/Sensor_Interface.c:37:6:SysTick_Handler	1
-../Src/Sensor_Interface.c:40:10:BSP_getTick	1
-../Src/Sensor_Interface.c:44:6:BSP_Delay_ms	2
-../Src/Sensor_Interface.c:48:6:BSP_init	1
+../Src/Sensor_Interface.c:27:6:BSP_Timer_init	1
+../Src/Sensor_Interface.c:36:6:SysTick_Handler	1
+../Src/Sensor_Interface.c:39:10:BSP_getTick	1
+../Src/Sensor_Interface.c:43:6:BSP_Delay_ms	2
+../Src/Sensor_Interface.c:47:6:BSP_init	1
 ../Src/Sensor_Interface.c:52:6:BSP_DTH11_start	1
 ../Src/Sensor_Interface.c:63:6:BSP_TIM2ENABLE	1
 ../Src/Sensor_Interface.c:70:10:BSP_getMicros	1
