@@ -1,0 +1,2 @@
+../Src/display_driver.c:19:6:BSP_led_init	4	static
+../Src/display_driver.c:29:6:Display_Update	16	static

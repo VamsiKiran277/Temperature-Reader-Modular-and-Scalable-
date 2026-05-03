@@ -8,6 +8,7 @@
 #ifndef SENSOR_INTERFACE_H_
 #define SENSOR_INTERFACE_H_
 //#include "display_driver.h"
+#include "common.h"
 
 #define GPIOA_BASE_ADDRESS  0x40020000
 #define RCC_BASE_ADDRESS  0x40023800
@@ -33,18 +34,6 @@ typedef struct {
 	volatile uint32_t RCC_APB1ENR; //offset at 0x40
 }RCC_t;
 
-typedef struct {
-	volatile uint32_t MODER; //offset at 0x00
-	volatile uint32_t OTYPER; //offset at 0x04
-	volatile uint32_t OSPEEDR;
-	volatile uint32_t PUPDR;
-	volatile uint32_t IDR;
-	volatile uint32_t ODR;
-	volatile uint32_t BSRR;
-	volatile uint32_t LCKR;
-	volatile uint32_t AFRL;
-	volatile uint32_t AFRH; //offset at 0x24
-}GPIO_t;
 
 //check CortexM4 programming manual
 typedef struct {
@@ -71,14 +60,6 @@ typedef struct {
 	volatile uint32_t TIMx_ARR;
 }TIM2_t;
 
-typedef struct {
-    uint8_t humidity_int;
-    uint8_t humidity_dec;
-    uint8_t temp_int;
-    uint8_t temp_dec;
-    uint8_t checksum;
-    uint8_t valid;       /* 1 = checksum passed, 0 = error */
-} DHT11_Data_t;
 
 //Function Definitons
 void BSP_init();
