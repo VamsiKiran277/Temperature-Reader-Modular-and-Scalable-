@@ -1,4 +1,4 @@
-# Temperature-Reader-Modular-and-Scalable-
+# Multi-Threaded Embedded Task Scheduler-
 
 ## Project: STM32F407 Embedded Temperature Reader & LED Monitor
 
