@@ -26,5 +26,4 @@ typedef struct {
 void BSP_USART2_init(void);
 void BSP_USART2_SendChar(char c);
 void BSP_USART2_SendString(char *str);
-void hello();
 #endif /* USART_H_ */
