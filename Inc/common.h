@@ -18,7 +18,7 @@ typedef struct {
 	volatile uint32_t ODR;
 	volatile uint32_t BSRR;
 	volatile uint32_t LCKR;
-	volatile uint32_t AFRL;
+	volatile uint32_t AFLR;
 	volatile uint32_t AFRH; //offset at 0x24
 }GPIO_t;
 
