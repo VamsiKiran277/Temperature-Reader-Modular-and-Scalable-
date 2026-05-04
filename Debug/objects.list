@@ -1,4 +1,5 @@
 "./Src/Sensor_Interface.o"
+"./Src/USART.o"
 "./Src/display_driver.o"
 "./Src/main.o"
 "./Src/syscalls.o"

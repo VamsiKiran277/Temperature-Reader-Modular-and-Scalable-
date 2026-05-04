@@ -23,5 +23,7 @@ typedef struct {
 }USART2_t;
 
 //function definition
-void BSP_USART_init(void);
+void BSP_USART2_init(void);
+void BSP_USART2_SendChar(char c);
+void BSP_USART2_SendString(char *str);
 #endif /* USART_H_ */

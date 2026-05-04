@@ -1,0 +1,3 @@
+../Src/USART.c:26:6:BSP_USART2_init	4	static
+../Src/USART.c:44:6:BSP_USART2_SendChar	16	static
+../Src/USART.c:55:6:BSP_USART2_SendString	16	static

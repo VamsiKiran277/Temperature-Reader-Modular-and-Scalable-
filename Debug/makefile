@@ -33,34 +33,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Temperature Reader
+BUILD_ARTIFACT_NAME := Multi-Threaded-Embedded-Task-Scheduler
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Temperature\ Reader.elf \
+Multi-Threaded-Embedded-Task-Scheduler.elf \
 
 MAP_FILES += \
-Temperature\ Reader.map \
+Multi-Threaded-Embedded-Task-Scheduler.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Temperature\ Reader.list \
+Multi-Threaded-Embedded-Task-Scheduler.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Temperature\ Reader.elf secondary-outputs
+main-build: Multi-Threaded-Embedded-Task-Scheduler.elf secondary-outputs
 
 # Tool invocations
-Temperature\ Reader.elf Temperature\ Reader.map: $(OBJS) $(USER_OBJS) V:\STM32\workspace\target\Temperature\ Reader\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Temperature Reader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"V:\STM32\workspace\target\Temperature Reader\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Temperature Reader.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Multi-Threaded-Embedded-Task-Scheduler.elf Multi-Threaded-Embedded-Task-Scheduler.map: $(OBJS) $(USER_OBJS) V:\STM32\workspace\target\Multi-Threaded-Embedded-Task-Scheduler\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Multi-Threaded-Embedded-Task-Scheduler.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"V:\STM32\workspace\target\Multi-Threaded-Embedded-Task-Scheduler\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Multi-Threaded-Embedded-Task-Scheduler.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -69,14 +69,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Temperature\ Reader.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Temperature Reader.list"
+Multi-Threaded-Embedded-Task-Scheduler.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Multi-Threaded-Embedded-Task-Scheduler.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Temperature\ Reader.elf Temperature\ Reader.list Temperature\ Reader.map Temperature\\ Reader.elf default.size.stdout
+	-$(RM) Multi-Threaded-Embedded-Task-Scheduler.elf Multi-Threaded-Embedded-Task-Scheduler.list Multi-Threaded-Embedded-Task-Scheduler.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

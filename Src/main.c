@@ -20,6 +20,7 @@
 #include "Sensor_Interface.h"
 #include "display_driver.h"
 #include "common.h"
+#include "USART.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -30,7 +31,10 @@ int main(void) {
 	BSP_init(); //Enable GPIO clocks
 	BSP_Timer_init(); //start systick for ms delays
 	BSP_TIM2ENABLE(); //start TIM2 for Microsecond Precision
+	BSP_USART2_init(); //Initialize USART2
 	DHT11_Data_t sensorData;
+	char uart_buff[64];//Buffer for formatted string
+	BSP_USART2_SendString("System Initialized. Starting Sensor Reads..\r\n");
 	while(1) {
 		//Communication Process starts
 		BSP_DTH11_start(); //send 18ms wake up pulse
@@ -40,6 +44,14 @@ int main(void) {
 			sensorData = BSP_DTH11_ReadData();
 			//Handling data to Display module
 			Display_Update(sensorData);
+			//Handling UART Transmission
+			if(sensorData.valid) {
+				BSP_USART2_SendString("Sensor Data Read Successfully\r\n");
+			} else {
+				BSP_USART2_SendString("Checksum Error\r\n");
+			}
+		} else {
+			BSP_USART2_SendString("Sensor Timeout or not found\r\n");
 		}
 		BSP_Delay_ms(2000);
 	}

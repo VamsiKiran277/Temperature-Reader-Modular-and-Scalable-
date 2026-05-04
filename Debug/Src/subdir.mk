@@ -6,6 +6,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/Sensor_Interface.c \
+../Src/USART.c \
 ../Src/display_driver.c \
 ../Src/main.c \
 ../Src/syscalls.c \
@@ -13,6 +14,7 @@ C_SRCS += \
 
 OBJS += \
 ./Src/Sensor_Interface.o \
+./Src/USART.o \
 ./Src/display_driver.o \
 ./Src/main.o \
 ./Src/syscalls.o \
@@ -20,6 +22,7 @@ OBJS += \
 
 C_DEPS += \
 ./Src/Sensor_Interface.d \
+./Src/USART.d \
 ./Src/display_driver.d \
 ./Src/main.d \
 ./Src/syscalls.d \
@@ -33,7 +36,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/Sensor_Interface.cyclo ./Src/Sensor_Interface.d ./Src/Sensor_Interface.o ./Src/Sensor_Interface.su ./Src/display_driver.cyclo ./Src/display_driver.d ./Src/display_driver.o ./Src/display_driver.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/Sensor_Interface.cyclo ./Src/Sensor_Interface.d ./Src/Sensor_Interface.o ./Src/Sensor_Interface.su ./Src/USART.cyclo ./Src/USART.d ./Src/USART.o ./Src/USART.su ./Src/display_driver.cyclo ./Src/display_driver.d ./Src/display_driver.o ./Src/display_driver.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
