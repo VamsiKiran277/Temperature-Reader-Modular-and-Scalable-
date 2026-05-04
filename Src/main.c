@@ -33,7 +33,6 @@ int main(void) {
 	BSP_TIM2ENABLE(); //start TIM2 for Microsecond Precision
 	BSP_USART2_init(); //Initialize USART2
 	DHT11_Data_t sensorData;
-	char uart_buff[64];//Buffer for formatted string
 	BSP_USART2_SendString("System Initialized. Starting Sensor Reads..\r\n");
 	while(1) {
 		//Communication Process starts
