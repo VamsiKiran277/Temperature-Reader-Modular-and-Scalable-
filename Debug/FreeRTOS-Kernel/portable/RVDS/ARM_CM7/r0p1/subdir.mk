@@ -5,38 +5,23 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/Sensor_Interface.c \
-../Src/USART.c \
-../Src/display_driver.c \
-../Src/main.c \
-../Src/syscalls.c \
-../Src/sysmem.c 
+../FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.c 
 
 OBJS += \
-./Src/Sensor_Interface.o \
-./Src/USART.o \
-./Src/display_driver.o \
-./Src/main.o \
-./Src/syscalls.o \
-./Src/sysmem.o 
+./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.o 
 
 C_DEPS += \
-./Src/Sensor_Interface.d \
-./Src/USART.d \
-./Src/display_driver.d \
-./Src/main.d \
-./Src/syscalls.d \
-./Src/sysmem.d 
+./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
+FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/%.o FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/%.su FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/%.cyclo: ../FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/%.c FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"V:/STM32/workspace/target/Multi-Threaded-Embedded-Task-Scheduler/FreeRTOS-Kernel/include" -I"V:/STM32/workspace/target/Multi-Threaded-Embedded-Task-Scheduler/FreeRTOS-Kernel/portable/GCC/ARM_CM4F" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 
-clean: clean-Src
+clean: clean-FreeRTOS-2d-Kernel-2f-portable-2f-RVDS-2f-ARM_CM7-2f-r0p1
 
-clean-Src:
-	-$(RM) ./Src/Sensor_Interface.cyclo ./Src/Sensor_Interface.d ./Src/Sensor_Interface.o ./Src/Sensor_Interface.su ./Src/USART.cyclo ./Src/USART.d ./Src/USART.o ./Src/USART.su ./Src/display_driver.cyclo ./Src/display_driver.d ./Src/display_driver.o ./Src/display_driver.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+clean-FreeRTOS-2d-Kernel-2f-portable-2f-RVDS-2f-ARM_CM7-2f-r0p1:
+	-$(RM) ./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.cyclo ./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.d ./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.o ./FreeRTOS-Kernel/portable/RVDS/ARM_CM7/r0p1/port.su
 
-.PHONY: clean-Src
+.PHONY: clean-FreeRTOS-2d-Kernel-2f-portable-2f-RVDS-2f-ARM_CM7-2f-r0p1
 
