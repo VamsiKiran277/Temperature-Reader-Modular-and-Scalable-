@@ -21,37 +21,50 @@
 #include "display_driver.h"
 #include "common.h"
 #include "USART.h"
+/*FreeRtos Includes*/
+#include "FreeRTOSConfig.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+//RTOS handles
+QueueHandle_t xSensorQueue = NULL;
+SemaphoreHandle_t xUartMutex = NULL;
+//Tasks
+void vSensorTask(void *pvParameters);
+void vDisplayTask(void *pvParameters);
+void vCommTask(void *pvParameters);
 int main(void) {
 	//Hardware Initialization
 	BSP_init(); //Enable GPIO clocks
 	BSP_Timer_init(); //start systick for ms delays
 	BSP_TIM2ENABLE(); //start TIM2 for Microsecond Precision
 	BSP_USART2_init(); //Initialize USART2
+	BSP_led_init(); //Initialize leds
 	DHT11_Data_t sensorData;
 	BSP_USART2_SendString("System Initialized. Starting Sensor Reads..\r\n");
-	while(1) {
-		//Communication Process starts
-		BSP_DTH11_start(); //send 18ms wake up pulse
-		//check up for handshake response Low or High
-		if (BSP_DTH11_Response()) {
-			//Read all 40 bits of data and verify check sum
-			sensorData = BSP_DTH11_ReadData();
-			//Handling data to Display module
-			Display_Update(sensorData);
-			//Handling UART Transmission
-			if(sensorData.valid) {
-				BSP_USART2_SendString("Sensor Data Read Successfully\r\n");
-			} else {
-				BSP_USART2_SendString("Checksum Error\r\n");
-			}
-		} else {
-			BSP_USART2_SendString("Sensor Timeout or not found\r\n");
-		}
-		BSP_Delay_ms(2000);
-	}
+//	while(1) {
+//		//Communication Process starts
+//		BSP_DTH11_start(); //send 18ms wake up pulse
+//		//check up for handshake response Low or High
+//		if (BSP_DTH11_Response()) {
+//			//Read all 40 bits of data and verify check sum
+//			sensorData = BSP_DTH11_ReadData();
+//			//Handling data to Display module
+//			Display_Update(sensorData);
+//			//Handling UART Transmission
+//			if(sensorData.valid) {
+//				BSP_USART2_SendString("Sensor Data Read Successfully\r\n");
+//			} else {
+//				BSP_USART2_SendString("Checksum Error\r\n");
+//			}
+//		} else {
+//			BSP_USART2_SendString("Sensor Timeout or not found\r\n");
+//		}
+//		BSP_Delay_ms(2000);
+//	}
 }
