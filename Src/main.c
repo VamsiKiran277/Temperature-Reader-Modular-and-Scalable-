@@ -47,6 +47,10 @@ int main(void) {
 	BSP_led_init(); //Initialize leds
 	DHT11_Data_t sensorData;
 	BSP_USART2_SendString("System Initialized. Starting Sensor Reads..\r\n");
+	//shared resource
+	xUartMutex = xSemaphoreCreateMutex();
+	// Queue holds up to 5 sensor readings
+    xSensorQueue = xQueueCreate( 5, sizeof( DHT11_Data_t ) );
 //	while(1) {
 //		//Communication Process starts
 //		BSP_DTH11_start(); //send 18ms wake up pulse
