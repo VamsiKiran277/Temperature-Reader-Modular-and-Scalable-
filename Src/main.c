@@ -23,7 +23,7 @@
 #include "USART.h"
 /*FreeRtos Includes*/
 #include "FreeRTOSConfig.h"
-#include "task.h"
+#include "task.h
 #include "queue.h"
 #include "semphr.h"
 
