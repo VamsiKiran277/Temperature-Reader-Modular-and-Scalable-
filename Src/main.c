@@ -23,7 +23,8 @@
 #include "USART.h"
 /*FreeRtos Includes*/
 #include "FreeRTOSConfig.h"
-#include "task.h
+#include "FreeRTOS.h"
+#include "task.h"
 #include "queue.h"
 #include "semphr.h"
 
@@ -71,4 +72,6 @@ int main(void) {
 //		}
 //		BSP_Delay_ms(2000);
 //	}
+
+
 }
