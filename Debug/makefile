@@ -60,7 +60,7 @@ main-build: Multi-Threaded-Embedded-Task-Scheduler.elf secondary-outputs
 
 # Tool invocations
 Multi-Threaded-Embedded-Task-Scheduler.elf Multi-Threaded-Embedded-Task-Scheduler.map: $(OBJS) $(USER_OBJS) V:\STM32\workspace\target\Multi-Threaded-Embedded-Task-Scheduler\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Multi-Threaded-Embedded-Task-Scheduler.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"V:\STM32\workspace\target\Multi-Threaded-Embedded-Task-Scheduler\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Multi-Threaded-Embedded-Task-Scheduler.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Multi-Threaded-Embedded-Task-Scheduler.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"V:\STM32\workspace\target\Multi-Threaded-Embedded-Task-Scheduler\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Multi-Threaded-Embedded-Task-Scheduler.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -1,3 +1,4 @@
+"./Src/FreeRTOS_Build.o"
 "./Src/Sensor_Interface.o"
 "./Src/USART.o"
 "./Src/display_driver.o"

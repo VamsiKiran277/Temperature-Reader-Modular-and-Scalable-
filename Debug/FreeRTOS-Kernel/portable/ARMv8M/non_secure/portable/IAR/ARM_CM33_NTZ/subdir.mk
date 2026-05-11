@@ -23,9 +23,9 @@ S_UPPER_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/%.o: ../FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/%.S FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/%.o: ../FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/%.s FreeRTOS-Kernel/portable/ARMv8M/non_secure/portable/IAR/ARM_CM33_NTZ/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-FreeRTOS-2d-Kernel-2f-portable-2f-ARMv8M-2f-non_secure-2f-portable-2f-IAR-2f-ARM_CM33_NTZ
 

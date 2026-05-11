@@ -1,17 +1,20 @@
 /*
  * Sensor_Interface.c
- *
- *  Created on: 29-Apr-2026
- *      Author: vamsi
  */
 
 #include <stdio.h>
 #include <stdint.h>
 #include "Sensor_Interface.h"
+
+// FreeRTOS includes for the tick counter
+#include "FreeRTOS.h"
+#include "task.h"
+
 //macros
 #define SYSTICK ((SYSTICK_t*)SYSTICK_BASE_ADDRESS)
 #define TIM2   ((TIM2_t*)TIM2_BASE_ADDRESS)
 #define CLK_CYCLE 16000000 // Set to 16MHz to match HSI startup for Renode
+
 //Bit - (set,clear,toggle)
 #define GPIOA_ENABLE (1<<0)
 #define GPIOD_ENABLE (1<<3)
@@ -20,9 +23,8 @@
 #define CONTROL_ENABLE      (7 << 0)
 #define RCC_APB1_TIM2En      (1<<0)
 #define TIM2_Timer_Start    (1<<0)
-//timer
-volatile uint32_t ms_ticks = 0; //hardware timer initialization for milli seconds
 
+volatile uint32_t ms_ticks = 0; //hardware timer initialization for milli seconds
 
 void BSP_Timer_init(void) {
 	SYSTICK->LOAD = ((CLK_CYCLE)/1000) -1; //setting the reload value for 1ms interval
@@ -33,17 +35,16 @@ void BSP_Timer_init(void) {
 	SYSTICK->CONTROL |= CONTROL_ENABLE;
 }
 
-void SysTick_Handler(void) {
-	ms_ticks++;
-}
+// Ask FreeRTOS for the current millisecond time instead of using custom SysTick
 uint32_t BSP_getTick(void) {
-	return ms_ticks;
-}
+	return xTaskGetTickCount();
+} // <-- THIS WAS THE MISSING BRACE!
 
 void BSP_Delay_ms(uint32_t delay) {
 	volatile uint32_t start = BSP_getTick();  //get current time
 	while((BSP_getTick() - start) < delay);
 }
+
 void BSP_init() {
 	RCC->RCC_AHB1ENR |=GPIOA_ENABLE; //enabled the clock for the GPIOA port
 	RCC->RCC_AHB1ENR |=GPIOD_ENABLE; //enabled the clock for GPIOD port
@@ -92,7 +93,6 @@ uint32_t BSP_DTH11_Response(void) {
 }
 
 //Read a single bit from DHT11
-
 uint8_t BSP_DTH11_ReadBit(void) {
 	uint32_t timeout;
 	uint32_t start;
